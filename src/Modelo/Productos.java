@@ -16,11 +16,15 @@ public class Productos {
     
     private int categoria;
     
+    private String fecha_caducidad;
+    private String fecha_compra;
+    private int cajaId;
+    
     public Productos(){
         
     }
 
-    public Productos(int id, String codigo, String nombre, int proveedor, String proveedorPro, int stock, double precio,int medida, int categoria) {
+    public Productos(int id, String codigo, String nombre, int proveedor, String proveedorPro, int stock, double precio,int medida, int categoria,String fecha_caducidad,String fecha_compra,int cajaId) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -30,8 +34,37 @@ public class Productos {
         this.precio = precio;
         this.medida = medida;
         this.categoria = categoria;
+        this.fecha_caducidad = fecha_caducidad;
+        this.fecha_compra = fecha_compra;
+        this.cajaId = cajaId;
         
     }
+
+    public String getFecha_compra() {
+        return fecha_compra;
+    }
+
+    public void setFecha_compra(String fecha_compra) {
+        this.fecha_compra = fecha_compra;
+    }
+
+    public int getCajaId() {
+        return cajaId;
+    }
+
+    public void setCajaId(int cajaId) {
+        this.cajaId = cajaId;
+    }
+    
+
+    public String getFecha_caducidad() {
+        return fecha_caducidad;
+    }
+
+    public void setFecha_caducidad(String fecha_caducidad) {
+        this.fecha_caducidad = fecha_caducidad;
+    }
+    
 
     public int getId() {
         return id;

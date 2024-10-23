@@ -15,7 +15,7 @@ public class ProductosDao {
     ResultSet rs;
     
     public boolean RegistrarProductos(Productos pro){
-        String sql = "INSERT INTO productos (codigo, nombre, proveedor, stock, precio,id_medida,id_categoria) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO productos (codigo, nombre, proveedor, stock, precio,id_medida,id_categoria,fecha_caducidad,fecha_compra,caja_id) VALUES (?,?,?,?,?,?,?,?,?,?)";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -26,6 +26,9 @@ public class ProductosDao {
             ps.setDouble(5, pro.getPrecio());
             ps.setInt(6, pro.getMedida());
             ps.setInt(7, pro.getCategoria());
+            ps.setString(8, pro.getFecha_caducidad());
+            ps.setString(9, pro.getFecha_compra());
+            ps.setInt(10, pro.getCajaId());
 
             ps.execute();
             return true;
@@ -86,6 +89,36 @@ public class ProductosDao {
         }
         return Listapro;
     }
+    
+    public List<Productos> ListarProductosPorCaducidad() {
+    List<Productos> ListaPro = new ArrayList<>();
+    String sql = "SELECT pr.id AS id_proveedor, pr.nombre AS nombre_proveedor, p.* " +
+                 "FROM proveedor pr " +
+                 "INNER JOIN productos p ON pr.id = p.proveedor " +
+                 "WHERE STR_TO_DATE(p.fecha_caducidad, '%d/%m/%Y') " +
+                 "BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY) " +
+                 "ORDER BY STR_TO_DATE(p.fecha_caducidad, '%d/%m/%Y') ASC";  // Ordena por fecha más próxima
+
+    try {
+        con = cn.getConnection();
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Productos pro = new Productos();
+            pro.setId(rs.getInt("id"));
+            pro.setCodigo(rs.getString("codigo"));
+            pro.setNombre(rs.getString("nombre"));
+            pro.setProveedorPro(rs.getString("nombre_proveedor"));
+            pro.setStock(rs.getInt("stock"));
+            pro.setFecha_caducidad(rs.getString("fecha_caducidad"));  // Almacena como String
+            ListaPro.add(pro);
+        }
+    } catch (SQLException e) {
+        System.out.println(e.toString());
+    }
+    return ListaPro;
+}
+
     
     
     

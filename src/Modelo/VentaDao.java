@@ -357,6 +357,75 @@ public class VentaDao {
     }
 }
 
+    public void pdfSalesByDateRange(String fechaInicio, String fechaFin) {
+    try {
+        Date date = new Date();
+        FileOutputStream archivo;
+        String url = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+        File salida = new File(url + "ventas_por_rango.pdf");
+        archivo = new FileOutputStream(salida);
+        Document doc = new Document();
+        PdfWriter.getInstance(doc, archivo);
+        doc.open();
+
+        // Agregar encabezado
+        doc.add(new Paragraph("Ventas desde " + fechaInicio + " hasta " + fechaFin, 
+                new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD, BaseColor.BLUE)));
+        doc.add(Chunk.NEWLINE);
+
+        // Tabla para encabezados de ventas
+        PdfPTable tablaEncabezados = new PdfPTable(4);
+        tablaEncabezados.setWidthPercentage(100);
+        tablaEncabezados.getDefaultCell().setBorder(0);
+        float[] columnWidthsEncabezados = new float[]{20f, 40f, 25f, 15f};
+        tablaEncabezados.setWidths(columnWidthsEncabezados);
+
+        PdfPCell c1 = new PdfPCell(new Phrase("ID Venta", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        PdfPCell c2 = new PdfPCell(new Phrase("Cliente", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        PdfPCell c3 = new PdfPCell(new Phrase("Fecha", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        PdfPCell c4 = new PdfPCell(new Phrase("Total", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        c2.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        c3.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        c4.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        tablaEncabezados.addCell(c1);
+        tablaEncabezados.addCell(c2);
+        tablaEncabezados.addCell(c3);
+        tablaEncabezados.addCell(c4);
+
+        // Query para obtener las ventas en el rango de fechas
+        String ventasQuery = "SELECT v.id, c.nombre, v.fecha, v.total " +
+                             "FROM ventas v " +
+                             "INNER JOIN clientes c ON v.cliente = c.id " +
+                             "WHERE STR_TO_DATE(v.fecha, '%d/%m/%Y') BETWEEN STR_TO_DATE(?, '%d/%m/%Y') " +
+                             "AND STR_TO_DATE(?, '%d/%m/%Y')";
+        try (Connection con = cn.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(ventasQuery)) {
+            ps.setString(1, fechaInicio);
+            ps.setString(2, fechaFin);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    tablaEncabezados.addCell(String.valueOf(rs.getInt("id")));
+                    tablaEncabezados.addCell(rs.getString("nombre"));
+                    tablaEncabezados.addCell(rs.getString("fecha"));
+                    tablaEncabezados.addCell(String.valueOf(rs.getDouble("total")));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las ventas: " + e.toString());
+        }
+
+        // Agregar tabla de ventas al documento
+        doc.add(tablaEncabezados);
+        doc.close();
+        archivo.close();
+        Desktop.getDesktop().open(salida);
+    } catch (DocumentException | IOException e) {
+        System.out.println("Error al crear el PDF: " + e.toString());
+    }
+}
+
 
     
 }
