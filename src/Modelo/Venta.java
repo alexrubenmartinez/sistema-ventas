@@ -9,18 +9,32 @@ public class Venta {
     private double total;
     private String fecha;
     
+    private int caja_id;
+    
     public Venta(){
         
     }
 
-    public Venta(int id, int cliente, String nombre_cli, String vendedor, double total, String fecha) {
+    public Venta(int id, int cliente, String nombre_cli, String vendedor, double total, String fecha,int caja_id) {
         this.id = id;
         this.cliente = cliente;
         this.nombre_cli = nombre_cli;
         this.vendedor = vendedor;
         this.total = total;
         this.fecha = fecha;
+        this.caja_id = caja_id;
+
     }
+
+    public int getCaja_id() {
+        return caja_id;
+    }
+
+    public void setCaja_id(int caja_id) {
+        this.caja_id = caja_id;
+    }
+    
+    
 
     public int getId() {
         return id;

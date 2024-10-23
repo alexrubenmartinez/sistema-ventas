@@ -52,7 +52,7 @@ public class VentaDao {
     }
     
     public int RegistrarVenta(Venta v){
-        String sql = "INSERT INTO ventas (cliente, vendedor, total, fecha) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO ventas (cliente, vendedor, total, fecha,caja_id) VALUES (?,?,?,?,?)";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -60,6 +60,7 @@ public class VentaDao {
             ps.setString(2, v.getVendedor());
             ps.setDouble(3, v.getTotal());
             ps.setString(4, v.getFecha());
+            ps.setInt(5, v.getCaja_id());
             ps.execute();
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -160,7 +161,7 @@ public class VentaDao {
             Document doc = new Document();
             PdfWriter.getInstance(doc, archivo);
             doc.open();
-            Image img = Image.getInstance(getClass().getResource("/Img/logo_pdf.png"));
+            Image img = Image.getInstance(getClass().getResource("/Img/logofinal.jpg"));
             //Fecha
             Paragraph fecha = new Paragraph();
             Font negrita = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLUE);

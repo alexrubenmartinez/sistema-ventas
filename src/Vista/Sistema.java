@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Modelo.CajaDao;
 import Modelo.Categoria;
 import Modelo.CategoriaDAO;
 import Modelo.Cliente;
@@ -38,6 +39,7 @@ import javax.swing.table.DefaultTableModel;
  * @author USUARIO
  */
 public final class Sistema extends javax.swing.JFrame {
+
     Date fechaVenta = new Date();
     String fechaActual = new SimpleDateFormat("dd/MM/yyyy").format(fechaVenta);
     Cliente cl = new Cliente();
@@ -57,17 +59,17 @@ public final class Sistema extends javax.swing.JFrame {
     DefaultTableModel tmp = new DefaultTableModel();
     int item;
     double Totalpagar = 0.00;
-    
-    CategoriaDAO CaDao = new CategoriaDAO();
-    
-    MedidaDao MeDao = new MedidaDao();
 
-    
+    CategoriaDAO CaDao = new CategoriaDAO();
+
+    MedidaDao MeDao = new MedidaDao();
+    CajaDao CajDao = new CajaDao();
 
     public Sistema() {
         initComponents();
     }
-    public Sistema (login priv){
+
+    public Sistema(login priv) {
         initComponents();
         this.setLocationRelativeTo(null);
         Midate.setDate(fechaVenta);
@@ -83,10 +85,11 @@ public final class Sistema extends javax.swing.JFrame {
             btnProductos.setEnabled(false);
             btnProveedor.setEnabled(false);
             LabelVendedor.setText(priv.getNombre());
-        }else{
+        } else {
             LabelVendedor.setText(priv.getNombre());
         }
     }
+
     public void ListarCliente() {
         List<Cliente> ListarCl = client.ListarCliente();
         modelo = (DefaultTableModel) TableCliente.getModel();
@@ -118,6 +121,7 @@ public final class Sistema extends javax.swing.JFrame {
         TableProveedor.setModel(modelo);
 
     }
+
     public void ListarUsuarios() {
         List<login> Listar = login.ListarUsuarios();
         modelo = (DefaultTableModel) TableUsuarios.getModel();
@@ -132,6 +136,7 @@ public final class Sistema extends javax.swing.JFrame {
         TableUsuarios.setModel(modelo);
 
     }
+
     public void ListarProductos() {
         List<Productos> ListarPro = proDao.ListarProductos();
         modelo = (DefaultTableModel) TableProducto.getModel();
@@ -148,7 +153,7 @@ public final class Sistema extends javax.swing.JFrame {
         TableProducto.setModel(modelo);
 
     }
-    
+
     public void ListarProductosStock() {
         List<Productos> ListarPro = proDao.ListarProductosStock();
         modelo = (DefaultTableModel) TableProducto1.getModel();
@@ -165,8 +170,6 @@ public final class Sistema extends javax.swing.JFrame {
         TableProducto1.setModel(modelo);
 
     }
-    
-    
 
     public void ListarConfig() {
         conf = proDao.BuscarDatos();
@@ -209,6 +212,7 @@ public final class Sistema extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnNuevaVenta = new javax.swing.JButton();
@@ -219,7 +223,6 @@ public final class Sistema extends javax.swing.JFrame {
         btnConfig = new javax.swing.JButton();
         tipo = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -252,6 +255,7 @@ public final class Sistema extends javax.swing.JFrame {
         TextMontoRecibido = new javax.swing.JTextField();
         LabelVuelto = new javax.swing.JLabel();
         BtnCalcularVuelto = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TableCliente = new javax.swing.JTable();
@@ -349,20 +353,29 @@ public final class Sistema extends javax.swing.JFrame {
         cbxRol = new javax.swing.JComboBox<>();
         jScrollPane6 = new javax.swing.JScrollPane();
         TableUsuarios = new javax.swing.JTable();
+        jPanel15 = new javax.swing.JPanel();
+        txtIdVenta1 = new javax.swing.JTextField();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel38 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jPanel16 = new javax.swing.JPanel();
+        jLabel45 = new javax.swing.JLabel();
+        btnPdfVentas1 = new javax.swing.JButton();
         LabelVendedor = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, 540, 120));
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/nuevologo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/logofinal.jpg"))); // NOI18N
 
         btnNuevaVenta.setBackground(new java.awt.Color(153, 153, 153));
         btnNuevaVenta.setForeground(new java.awt.Color(255, 255, 255));
         btnNuevaVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Nventa.png"))); // NOI18N
-        btnNuevaVenta.setText("Nueva Venta");
+        btnNuevaVenta.setText("Nueva venta");
         btnNuevaVenta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnNuevaVenta.setFocusable(false);
         btnNuevaVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -475,12 +488,12 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 0, 0)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
                 .addComponent(tipo)
-                .addGap(8, 8, 8)
-                .addComponent(btnNuevaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnNuevaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
                 .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -492,11 +505,10 @@ public final class Sistema extends javax.swing.JFrame {
                 .addComponent(btnConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 19, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 560));
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 870, 130));
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -618,7 +630,7 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 400, -1, -1));
 
         LabelTotal.setText("-----");
-        jPanel2.add(LabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 350, -1, -1));
+        jPanel2.add(LabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 350, -1, -1));
         jPanel2.add(txtIdCV, new org.netbeans.lib.awtextra.AbsoluteConstraints(327, 375, -1, -1));
         jPanel2.add(txtIdPro, new org.netbeans.lib.awtextra.AbsoluteConstraints(678, 126, -1, -1));
 
@@ -647,18 +659,26 @@ public final class Sistema extends javax.swing.JFrame {
                 TextMontoRecibidoActionPerformed(evt);
             }
         });
-        jPanel2.add(TextMontoRecibido, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 380, 30, -1));
+        jPanel2.add(TextMontoRecibido, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 380, 50, -1));
 
         LabelVuelto.setText("-----");
-        jPanel2.add(LabelVuelto, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 410, -1, -1));
+        jPanel2.add(LabelVuelto, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 410, -1, -1));
 
-        BtnCalcularVuelto.setText("Calc");
+        BtnCalcularVuelto.setText("C");
         BtnCalcularVuelto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnCalcularVueltoActionPerformed(evt);
             }
         });
-        jPanel2.add(BtnCalcularVuelto, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 370, 60, -1));
+        jPanel2.add(BtnCalcularVuelto, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 380, 40, -1));
+
+        jButton3.setText("Caja");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jTabbedPane1.addTab("1", jPanel2);
 
@@ -1452,6 +1472,100 @@ public final class Sistema extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("7", jPanel12);
 
+        jPanel14.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel38.setText("ABRIR CAJA");
+
+        jButton2.setText("Abrir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel38)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+
+        jPanel16.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel45.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel45.setText("GENERAR REPORTE");
+
+        btnPdfVentas1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf.png"))); // NOI18N
+        btnPdfVentas1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPdfVentas1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addComponent(btnPdfVentas1)
+                .addContainerGap())
+        );
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPdfVentas1)
+                    .addComponent(jLabel45))
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
+                .addContainerGap(799, Short.MAX_VALUE)
+                .addComponent(txtIdVenta1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addGap(247, 247, 247)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addComponent(txtIdVenta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(84, 84, 84)
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(117, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("0", jPanel15);
+
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 95, 860, 460));
 
         LabelVendedor.setForeground(new java.awt.Color(255, 255, 255));
@@ -1526,14 +1640,14 @@ public final class Sistema extends javax.swing.JFrame {
         llenarMedida();
         cbxProveedorPro2.removeAllItems();
         llenarCategoria();
-        
-        
+
+
     }//GEN-LAST:event_btnProductosMouseClicked
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        if(txtNombre.getText().equals("") || txtCorreo.getText().equals("") || txtPass.getPassword().equals("")){
+        if (txtNombre.getText().equals("") || txtCorreo.getText().equals("") || txtPass.getPassword().equals("")) {
             JOptionPane.showMessageDialog(null, "Todo los campos son requeridos");
-        }else{
+        } else {
             String correo = txtCorreo.getText();
             String pass = String.valueOf(txtPass.getPassword());
             String nom = txtNombre.getText();
@@ -1549,6 +1663,7 @@ public final class Sistema extends javax.swing.JFrame {
             nuevoUsuario();
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
+
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCorreoActionPerformed
@@ -1572,9 +1687,9 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void btnPdfVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfVentasActionPerformed
 
-        if(txtIdVenta.getText().equals("")){
+        if (txtIdVenta.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Selecciona una fila");
-        }else{
+        } else {
             v = Vdao.BuscarVenta(Integer.parseInt(txtIdVenta.getText()));
             Vdao.pdfV(v.getId(), v.getCliente(), v.getTotal(), v.getVendedor());
         }
@@ -1585,6 +1700,37 @@ public final class Sistema extends javax.swing.JFrame {
         int fila = TableVentas.rowAtPoint(evt.getPoint());
         txtIdVenta.setText(TableVentas.getValueAt(fila, 0).toString());
     }//GEN-LAST:event_TableVentasMouseClicked
+
+    private void TableProducto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableProducto1MouseClicked
+        // TODO add your handling code here:
+        btnEditarpro.setEnabled(true);
+        btnEliminarPro.setEnabled(true);
+        btnGuardarpro.setEnabled(true);
+        int fila = TableProducto.rowAtPoint(evt.getPoint());
+        txtIdproducto.setText(TableProducto.getValueAt(fila, 0).toString());
+        pro = proDao.BuscarId(Integer.parseInt(txtIdproducto.getText()));
+        txtCodigoPro.setText(pro.getCodigo());
+        txtDesPro.setText(pro.getNombre());
+        txtCantPro.setText("" + pro.getStock());
+        txtPrecioPro.setText("" + pro.getPrecio());
+        cbxProveedorPro.setSelectedItem(new Combo(pro.getProveedor(), pro.getProveedorPro()));
+    }//GEN-LAST:event_TableProducto1MouseClicked
+
+    private void cbxProveedorPro2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProveedorPro2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxProveedorPro2ActionPerformed
+
+    private void cbxProveedorPro2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxProveedorPro2ItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxProveedorPro2ItemStateChanged
+
+    private void cbxProveedorPro1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProveedorPro1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxProveedorPro1ActionPerformed
+
+    private void cbxProveedorPro1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxProveedorPro1ItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxProveedorPro1ItemStateChanged
 
     private void btnNuevoProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProActionPerformed
         // TODO add your handling code here:
@@ -1605,7 +1751,7 @@ public final class Sistema extends javax.swing.JFrame {
                 btnEliminarPro.setEnabled(false);
                 btnGuardarpro.setEnabled(true);
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Selecciona una fila");
         }
     }//GEN-LAST:event_btnEliminarProActionPerformed
@@ -1648,14 +1794,13 @@ public final class Sistema extends javax.swing.JFrame {
             pro.setNombre(txtDesPro.getText());
             Combo itemP = (Combo) cbxProveedorPro.getSelectedItem();
             pro.setProveedor(itemP.getId());
-            
+
             Combo itemC = (Combo) cbxProveedorPro1.getSelectedItem();
             pro.setCategoria(itemC.getId());
-            
-             Combo itemM = (Combo) cbxProveedorPro2.getSelectedItem();
+
+            Combo itemM = (Combo) cbxProveedorPro2.getSelectedItem();
             pro.setMedida(itemM.getId());
-            
-            
+
             pro.setStock(Integer.parseInt(txtCantPro.getText()));
             pro.setPrecio(Double.parseDouble(txtPrecioPro.getText()));
             proDao.RegistrarProductos(pro);
@@ -1683,7 +1828,6 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void cbxProveedorProItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxProveedorProItemStateChanged
         // TODO add your handling code here:
-
     }//GEN-LAST:event_cbxProveedorProItemStateChanged
 
     private void txtPrecioProKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioProKeyTyped
@@ -1868,32 +2012,54 @@ public final class Sistema extends javax.swing.JFrame {
         txtDirecionCliente.setText(TableCliente.getValueAt(fila, 4).toString());
     }//GEN-LAST:event_TableClienteMouseClicked
 
+    private void BtnCalcularVueltoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCalcularVueltoActionPerformed
+        // TODO add your handling code here:
+        try {
+            double montoRecibido = Double.parseDouble(TextMontoRecibido.getText());
+            if (montoRecibido >= Totalpagar) {
+                double vuelto = montoRecibido - Totalpagar;
+                LabelVuelto.setText(String.format("S/ : %.2f", vuelto));
+            } else {
+                LabelVuelto.setText("Monto insuficiente");
+            }
+        } catch (NumberFormatException e) {
+            LabelVuelto.setText("Entrada inválida");
+        }
+    }//GEN-LAST:event_BtnCalcularVueltoActionPerformed
+
+    private void TextMontoRecibidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextMontoRecibidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextMontoRecibidoActionPerformed
+
     private void btnGraficarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGraficarActionPerformed
         // TODO add your handling code here:
 
         //String fechaReporte = new SimpleDateFormat("dd/MM/yyyy").format(Midate.getDate());
-       // Grafico.Graficar(fechaReporte);
-        
-       Vdao.pdfAllSales();
-
+        // Grafico.Graficar(fechaReporte);
+        Vdao.pdfAllSales();
     }//GEN-LAST:event_btnGraficarActionPerformed
 
     private void btnGenerarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaActionPerformed
         // TODO add your handling code here:
+
         if (TableVenta.getRowCount() > 0) {
-            if (!"".equals(txtNombreClienteventa.getText())) {
-                RegistrarVenta();
-                RegistrarDetalle();
-                ActualizarStock();
-                LimpiarTableVenta();
-                LimpiarClienteventa();
+            if (!"cerrada".equals(CajDao.obtenerUltimaCaja().getEstado().getValor())) {
+                if (!"".equals(txtNombreClienteventa.getText())) {
+                    RegistrarVenta();
+                    RegistrarDetalle();
+                    ActualizarStock();
+                    LimpiarTableVenta();
+                    LimpiarClienteventa();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
+                JOptionPane.showMessageDialog(null, "Primero debe abrir la caja");
             }
+
         } else {
             JOptionPane.showMessageDialog(null, "No hay productos en la venta");
         }
-
     }//GEN-LAST:event_btnGenerarVentaActionPerformed
 
     private void txtRucVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaKeyTyped
@@ -2009,55 +2175,21 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtCodigoVentaKeyPressed
 
-    private void TableProducto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableProducto1MouseClicked
+    private void btnPdfVentas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfVentas1ActionPerformed
         // TODO add your handling code here:
-        btnEditarpro.setEnabled(true);
-        btnEliminarPro.setEnabled(true);
-        btnGuardarpro.setEnabled(true);
-        int fila = TableProducto.rowAtPoint(evt.getPoint());
-        txtIdproducto.setText(TableProducto.getValueAt(fila, 0).toString());
-        pro = proDao.BuscarId(Integer.parseInt(txtIdproducto.getText()));
-        txtCodigoPro.setText(pro.getCodigo());
-        txtDesPro.setText(pro.getNombre());
-        txtCantPro.setText("" + pro.getStock());
-        txtPrecioPro.setText("" + pro.getPrecio());
-        cbxProveedorPro.setSelectedItem(new Combo(pro.getProveedor(), pro.getProveedorPro()));
-    }//GEN-LAST:event_TableProducto1MouseClicked
+    }//GEN-LAST:event_btnPdfVentas1ActionPerformed
 
-    private void BtnCalcularVueltoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCalcularVueltoActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         try {
-        double montoRecibido = Double.parseDouble(TextMontoRecibido.getText());
-        if (montoRecibido >= Totalpagar) {
-            double vuelto = montoRecibido - Totalpagar;
-            LabelVuelto.setText(String.format("S/ : %.2f", vuelto));
-        } else {
-            LabelVuelto.setText("Monto insuficiente");
-        }
-    } catch (NumberFormatException e) {
-        LabelVuelto.setText("Entrada inválida");
-    }
-    }//GEN-LAST:event_BtnCalcularVueltoActionPerformed
+        Caja c = new Caja(this, rootPaneCheckingEnabled, 1);
+        c.setVisible(true);
 
-    private void TextMontoRecibidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextMontoRecibidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextMontoRecibidoActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void cbxProveedorPro1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxProveedorPro1ItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxProveedorPro1ItemStateChanged
-
-    private void cbxProveedorPro1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProveedorPro1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxProveedorPro1ActionPerformed
-
-    private void cbxProveedorPro2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxProveedorPro2ItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxProveedorPro2ItemStateChanged
-
-    private void cbxProveedorPro2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProveedorPro2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxProveedorPro2ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Caja c = new Caja(this, rootPaneCheckingEnabled, 1);
+        c.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2128,6 +2260,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JButton btnNuevoPro;
     private javax.swing.JButton btnNuevoProveedor;
     private javax.swing.JButton btnPdfVentas;
+    private javax.swing.JButton btnPdfVentas1;
     private javax.swing.JButton btnProductos;
     private javax.swing.JButton btnProveedor;
     private javax.swing.JButton btnVentas;
@@ -2137,6 +2270,8 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JComboBox<Object> cbxProveedorPro2;
     private javax.swing.JComboBox<String> cbxRol;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2168,6 +2303,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
@@ -2175,6 +2311,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -2185,6 +2322,9 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2219,6 +2359,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txtIdPro;
     private javax.swing.JTextField txtIdProveedor;
     private javax.swing.JTextField txtIdVenta;
+    private javax.swing.JTextField txtIdVenta1;
     private javax.swing.JTextField txtIdproducto;
     private javax.swing.JTextField txtMensaje;
     private javax.swing.JTextField txtNombre;
@@ -2283,12 +2424,14 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void RegistrarVenta() {
         int cliente = Integer.parseInt(txtIdCV.getText());
+        int caja = CajDao.obtenerUltimaCajaAbierta().getId();
         String vendedor = LabelVendedor.getText();
         double monto = Totalpagar;
         v.setCliente(cliente);
         v.setVendedor(vendedor);
         v.setTotal(monto);
         v.setFecha(fechaActual);
+        v.setCaja_id(caja);
         Vdao.RegistrarVenta(v);
     }
 
@@ -2333,12 +2476,14 @@ public final class Sistema extends javax.swing.JFrame {
         txtNombreClienteventa.setText("");
         txtIdCV.setText("");
     }
-    private void nuevoUsuario(){
+
+    private void nuevoUsuario() {
         txtNombre.setText("");
         txtCorreo.setText("");
         txtPass.setText("");
     }
-    private void llenarProveedor(){
+
+    private void llenarProveedor() {
         List<Proveedor> lista = PrDao.ListarProveedor();
         for (int i = 0; i < lista.size(); i++) {
             int id = lista.get(i).getId();
@@ -2346,8 +2491,8 @@ public final class Sistema extends javax.swing.JFrame {
             cbxProveedorPro.addItem(new Combo(id, nombre));
         }
     }
-    
-    private void llenarCategoria(){
+
+    private void llenarCategoria() {
         List<Categoria> lista = CaDao.ListarCategorias();
         for (int i = 0; i < lista.size(); i++) {
             int id = lista.get(i).getId();
@@ -2355,8 +2500,8 @@ public final class Sistema extends javax.swing.JFrame {
             cbxProveedorPro2.addItem(new Combo(id, nombre));
         }
     }
-    
-    private void llenarMedida(){
+
+    private void llenarMedida() {
         List<Medida> lista = MeDao.ListarMedidas();
         for (int i = 0; i < lista.size(); i++) {
             int id = lista.get(i).getId();
